@@ -32,13 +32,17 @@ function matchList(searchStr){
 
 function filterList(){
   $('.search-bar').on('input',function(event){
-  let value =  $('.js-search-bar').val();
+    let value =  $('.js-search-bar').val();
     matchList(value);
     renderShoppingList();
   });
 }
-console.log(matchString());
 
+function editListItem(){
+  $('.js-shopping-item').on('click', function(event){
+    $(event.currentTarget).hide()
+  });
+}
 
 function generateShoppingItemsString(shoppingList) {
   console.log('Generating shopping list element');
@@ -164,6 +168,7 @@ function handleShoppingList() {
   handleDeleteItemClicked();
   handleToggleHideFilter();
   filterList();
+  editListItem();
 }
 
 // when the page loads, call `handleShoppingList`
