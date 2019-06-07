@@ -2,18 +2,19 @@
 
 const STORE = {
   items: [
-    {id: cuid(), name: "apples", checked: false},
-    {id: cuid(), name: "oranges", checked: false},
-    {id: cuid(), name: "milk", checked: true},
-    {id: cuid(), name: "bread", checked: false}
+    {id: cuid(), name: 'apples', checked: false},
+    {id: cuid(), name: 'oranges', checked: false},
+    {id: cuid(), name: 'milk', checked: true},
+    {id: cuid(), name: 'bread', checked: false}
   ],
-  hideCompleted: false
+  hideCompleted: false,
+  stringOutput: null,
 };
 
 function generateItemElement(item) {
   return `
     <li data-item-id="${item.id}">
-      <span class="shopping-item js-shopping-item ${item.checked ? "shopping-item__checked" : ''}">${item.name}</span>
+      <span class="shopping-item js-shopping-item ${item.checked ? 'shopping-item__checked' : ''}">${item.name}</span>
       <div class="shopping-item-controls">
         <button class="shopping-item-toggle js-item-toggle">
             <span class="button-label">check</span>
@@ -25,9 +26,22 @@ function generateItemElement(item) {
     </li>`;
 }
 
+function matchList(searchStr){
+  STORE.stringOutput = searchStr;
+}
+
+function filterList(){
+  $('.search-bar').on('input',function(event){
+  let value =  $('.js-search-bar').val();
+    matchList(value);
+    renderShoppingList();
+  });
+}
+console.log(matchString());
+
 
 function generateShoppingItemsString(shoppingList) {
-  console.log("Generating shopping list element");
+  console.log('Generating shopping list element');
 
   const items = shoppingList.map((item) => generateItemElement(item));
   
@@ -48,7 +62,9 @@ function renderShoppingList() {
   if (STORE.hideCompleted) {
     filteredItems = filteredItems.filter(item => !item.checked);
   }
-
+  if(STORE.stringOutput) {
+    filteredItems = filteredItems.filter(item => item.name.includes(STORE.stringOutput));
+  }
   // at this point, all filtering work has been done (or not done, if that's the current settings), so
   // we send our `filteredItems` into our HTML generation function 
   const shoppingListItemsString = generateShoppingItemsString(filteredItems);
@@ -88,7 +104,7 @@ function getItemIdFromElement(item) {
 }
 
 function handleItemCheckClicked() {
-  $('.js-shopping-list').on('click', `.js-item-toggle`, event => {
+  $('.js-shopping-list').on('click', '.js-item-toggle', event => {
     console.log('`handleItemCheckClicked` ran');
     const id = getItemIdFromElement(event.currentTarget);
     toggleCheckedForListItem(id);
@@ -147,6 +163,7 @@ function handleShoppingList() {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   handleToggleHideFilter();
+  filterList();
 }
 
 // when the page loads, call `handleShoppingList`
