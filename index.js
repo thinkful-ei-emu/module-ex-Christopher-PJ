@@ -31,7 +31,7 @@ function generateShoppingItemsString(shoppingList) {
 
   const items = shoppingList.map((item) => generateItemElement(item));
   
-  return items.join("");
+  return items.join('');
 }
 
 
@@ -75,7 +75,7 @@ function handleNewItemSubmit() {
 }
 
 function toggleCheckedForListItem(itemId) {
-  console.log("Toggling checked property for item with id " + itemId);
+  console.log('Toggling checked property for item with id ' + itemId);
   const item = STORE.items.find(item => item.id === itemId);
   item.checked = !item.checked;
 }
