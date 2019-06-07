@@ -37,10 +37,14 @@ function filterList(){
     renderShoppingList();
   });
 }
-
+function clearedItem(cleared){
+  STORE.items.name = '';
+}
 function editListItem(){
   $('.js-shopping-item').on('click', function(event){
-    $(event.currentTarget).hide()
+    let clear = $('spam').closest('li').val('');
+    clearedItem(clear);
+    renderShoppingList();
   });
 }
 
