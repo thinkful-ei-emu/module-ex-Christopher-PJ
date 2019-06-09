@@ -21,54 +21,12 @@ function generateItemElement(item) {
         </button>
         <button class="shopping-item-delete js-item-delete">
             <span class="button-label">delete</span>
+          </button>
+          <button class= 'shopping-item-edit js-item-edit'><span class='button-label>Edit</span>
         </button>
       </div>
     </li>`;
 }
-
-function matchList(searchStr){
-  STORE.stringOutput = searchStr;
-}
-
-function filterList(){
-  $('.search-bar').on('input',function(event){
-    let value =  $('.js-search-bar').val();
-    matchList(value);
-    renderShoppingList();
-  });
-}
-
-//edit item functions referenced from solution but seems too much for me to work off of without simply stealing from solution. UNFINISHED.
-function targetItemToEdit(itemId, isEditing){
-  let targettedItem = STORE.items.find(item => item.id = itemId);
-  targettedItem.isEditing = isEditing; 
-}
-
-function toggleEditItemNameClicked(){
-  $('.js-shopping-list').on('click', '.js-shopping-item', function(event) {
-    let id = getItemIdFromElement(event.target);
-    targetItemToEdit(id);
-    renderShoppingList();
-  });
-}
-
-function setNewName(itemId, newName){
-  let targetName = STORE.items.find(item => item.id === itemId);
-  targetName.name = newName;
-}
-
-function inputNewName(){
-  $('.js-shopping-list').on('submit')
-}
-
-function generateShoppingItemsString(shoppingList) {
-  console.log('Generating shopping list element');
-
-  const items = shoppingList.map((item) => generateItemElement(item));
-  
-  return items.join('');
-}
-
 
 function renderShoppingList() {
   // render the shopping list in the DOM
@@ -135,6 +93,28 @@ function handleItemCheckClicked() {
 }
 
 
+//SEARCHING for items in list that match inputted characters. 
+function matchList(searchStr){
+  STORE.stringOutput = searchStr;
+}
+
+function filterList(){
+  $('.search-bar').on('input',function(event){
+    let value =  $('.js-search-bar').val();
+    matchList(value);
+    renderShoppingList();
+  });
+}
+
+function generateShoppingItemsString(shoppingList) {
+  console.log('Generating shopping list element');
+
+  const items = shoppingList.map((item) => generateItemElement(item));
+  
+  return items.join('');
+}
+
+
 // name says it all. responsible for deleting a list item.
 function deleteListItem(itemId) {
   console.log(`Deleting item with id  ${itemId} from shopping list`)
@@ -175,6 +155,18 @@ function handleToggleHideFilter() {
   });
 }
 
+//EDITING LIST ITEM 
+function targetItemToEdit(itemId, isEditing){
+  let targettedItem = STORE.items.find(item => item.id = itemId);
+  targettedItem.isEditing = isEditing; 
+}
+
+function setNewName(itemId, newName){
+  let targetName = STORE.items.find(item => item.id === itemId);
+  targetName.name = newName;
+}
+
+
 // this function will be our callback when the page loads. it's responsible for
 // initially rendering the shopping list, and activating our individual functions
 // that handle new item submission and user clicks on the "check" and "delete" buttons
@@ -186,7 +178,7 @@ function handleShoppingList() {
   handleDeleteItemClicked();
   handleToggleHideFilter();
   filterList();
-  editListItem();
+  inputNewName();
 }
 
 // when the page loads, call `handleShoppingList`
