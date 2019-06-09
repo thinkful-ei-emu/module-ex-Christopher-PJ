@@ -2,10 +2,10 @@
 
 const STORE = {
   items: [
-    {id: cuid(), name: 'apples', checked: false},
-    {id: cuid(), name: 'oranges', checked: false},
-    {id: cuid(), name: 'milk', checked: true},
-    {id: cuid(), name: 'bread', checked: false}
+    {id: cuid(), name: 'apples', checked: false, isEditing: false},
+    {id: cuid(), name: 'oranges', checked: false, isEditing: false},
+    {id: cuid(), name: 'milk', checked: true, isEditing: false},
+    {id: cuid(), name: 'bread', checked: false, isEditing: false}
   ],
   hideCompleted: false,
   stringOutput: null,
@@ -37,15 +37,28 @@ function filterList(){
     renderShoppingList();
   });
 }
-function clearedItem(cleared){
-  STORE.items.name = '';
+
+//edit item functions referenced from solution but seems too much for me to work off of without simply stealing from solution. UNFINISHED.
+function targetItemToEdit(itemId, isEditing){
+  let targettedItem = STORE.items.find(item => item.id = itemId);
+  targettedItem.isEditing = isEditing; 
 }
-function editListItem(){
-  $('.js-shopping-item').on('click', function(event){
-    let clear = $('spam').closest('li').val('');
-    clearedItem(clear);
+
+function toggleEditItemNameClicked(){
+  $('.js-shopping-list').on('click', '.js-shopping-item', function(event) {
+    let id = getItemIdFromElement(event.target);
+    targetItemToEdit(id);
     renderShoppingList();
   });
+}
+
+function setNewName(itemId, newName){
+  let targetName = STORE.items.find(item => item.id === itemId);
+  targetName.name = newName;
+}
+
+function inputNewName(){
+  $('.js-shopping-list').on('submit')
 }
 
 function generateShoppingItemsString(shoppingList) {
@@ -73,6 +86,7 @@ function renderShoppingList() {
   if(STORE.stringOutput) {
     filteredItems = filteredItems.filter(item => item.name.includes(STORE.stringOutput));
   }
+  
   // at this point, all filtering work has been done (or not done, if that's the current settings), so
   // we send our `filteredItems` into our HTML generation function 
   const shoppingListItemsString = generateShoppingItemsString(filteredItems);
