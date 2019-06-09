@@ -22,7 +22,7 @@ function generateItemElement(item) {
         <button class="shopping-item-delete js-item-delete">
             <span class="button-label">delete</span>
           </button>
-          <button class= 'shopping-item-edit js-item-edit'><span class='button-label>Edit</span>
+          <button class= "shopping-item-edit js-item-edit"><span class='button-label'>Edit</span>
         </button>
       </div>
     </li>`;
@@ -161,6 +161,20 @@ function targetItemToEdit(itemId, isEditing){
   targettedItem.isEditing = isEditing; 
 }
 
+function onClickToEditName(){
+  $('.js-shopping-list').on('click', '.js-item-edit', event => {
+    let clearValue = getItemIdFromElement().val('');
+    targetItemToEdit(clearValue, true);
+  });
+}
+
+function finalizeEdit() {
+  $('.js-shopping-list').on('submit', event => {
+    $(event.target).val(setNewName(targetItemToEdit, true));
+    renderShoppingList();
+  });
+}
+
 function setNewName(itemId, newName){
   let targetName = STORE.items.find(item => item.id === itemId);
   targetName.name = newName;
@@ -178,7 +192,7 @@ function handleShoppingList() {
   handleDeleteItemClicked();
   handleToggleHideFilter();
   filterList();
-  inputNewName();
+  finalizeEdit();
 }
 
 // when the page loads, call `handleShoppingList`
