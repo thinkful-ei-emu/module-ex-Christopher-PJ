@@ -44,6 +44,10 @@ function renderShoppingList() {
   if(STORE.stringOutput) {
     filteredItems = filteredItems.filter(item => item.name.includes(STORE.stringOutput));
   }
+
+  if(STORE.checked){
+    STORE.name.val('');
+  }
   
   // at this point, all filtering work has been done (or not done, if that's the current settings), so
   // we send our `filteredItems` into our HTML generation function 
@@ -161,10 +165,13 @@ function targetItemToEdit(itemId, isEditing){
   targettedItem.isEditing = isEditing; 
 }
 
+
+
 function onClickToEditName(){
   $('.js-shopping-list').on('click', '.js-item-edit', event => {
-    let clearValue = getItemIdFromElement().val('');
-    targetItemToEdit(clearValue, true);
+    const id = getItemIdFromElement(event.currentTarget);
+    targetItemToEdit(id);
+    renderShoppingList();
   });
 }
 
