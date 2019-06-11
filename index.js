@@ -45,6 +45,10 @@ function renderShoppingList() {
     filteredItems = filteredItems.filter(item => item.name.includes(STORE.stringOutput));
   }
 
+  if(STORE.isEditing){
+    finalizeEdit().val();
+  }
+
   if(STORE.checked){
     STORE.name.val('');
   }
@@ -160,33 +164,18 @@ function handleToggleHideFilter() {
 }
 
 //EDITING LIST ITEM 
-function targetItemToEdit(itemId, isEditing){
-  let targettedItem = STORE.items.find(item => item.id = itemId);
-  targettedItem.isEditing = isEditing; 
-}
 
-
-
-function onClickToEditName(){
-  $('.js-shopping-list').on('click', '.js-item-edit', event => {
-    const id = getItemIdFromElement(event.currentTarget);
-    targetItemToEdit(id);
-    renderShoppingList();
+function handleEditItemClicked() {
+  $('.js-shopping-list').on('click', '.js-item-edit', function() {
+    let edit = window.prompt('Edit Item', '');
+    const itemId = getItemIdFromElement(event.target);
+    const item = STORE.items.find(item => item.id === itemId);
+    if (edit) {
+      item.name = edit;
+      renderShoppingList();
+    }
   });
 }
-
-function finalizeEdit() {
-  $('.js-shopping-list').on('submit', event => {
-    $(event.target).val(setNewName(targetItemToEdit, true));
-    renderShoppingList();
-  });
-}
-
-function setNewName(itemId, newName){
-  let targetName = STORE.items.find(item => item.id === itemId);
-  targetName.name = newName;
-}
-
 
 // this function will be our callback when the page loads. it's responsible for
 // initially rendering the shopping list, and activating our individual functions
@@ -199,7 +188,7 @@ function handleShoppingList() {
   handleDeleteItemClicked();
   handleToggleHideFilter();
   filterList();
-  finalizeEdit();
+  handleEditItemClicked();
 }
 
 // when the page loads, call `handleShoppingList`
