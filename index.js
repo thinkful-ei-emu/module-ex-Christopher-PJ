@@ -167,7 +167,7 @@ function handleToggleHideFilter() {
 
 function handleEditItemClicked() {
   $('.js-shopping-list').on('click', '.js-item-edit', function() {
-    let edit = window.prompt('Edit Item', '');
+    let edit = window.prompt('Edit Item', 'Enter Item Name...');
     const itemId = getItemIdFromElement(event.target);
     const item = STORE.items.find(item => item.id === itemId);
     if (edit) {
